@@ -1,0 +1,89 @@
+import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
+
+import java.time.Duration;
+
+public class AutorizationTests {
+
+     @BeforeEach
+     void setUp() {
+         open("https://www.tomato-pizza.ru/menu/ryazan/pizza");
+         getWebDriver().manage().window().maximize();
+     }
+
+     // Проерка доступности сайта
+    @Test
+    void test01LoadHomePage() {
+        $("title").shouldNotHave(text("Заказать пиццу в Рязани недорого. Бесплатная доставка пиццы на дом. Цены и общее меню ресторана | Томато"));
+
+    }
+
+        // Регистрация(авторизация) пользователя
+     @Test
+     public void test02UserRegistration() {
+         open("https://www.tomato-pizza.ru/menu/ryazan/pizza");
+
+         $x("//a[@class='nav-link auth-link']").click();
+
+         $x("//input[@id='registerPhone']").setValue("+79991234567");
+
+         $x("//button[@class='btn btn-tomato']").click();
+
+        // $x("//input[@id='registerName']").setValue("Сергей");
+        // $x("//button[@class='btn btn-tomato']").click();
+
+         $x("//div[@class='help-text reset-title']").shouldHave(text("Введите код из СМС, отправленный на телефон"));
+     }
+
+     // Добавление товаров в корзину
+     @Test
+     void test03AddProduct() {
+
+         $x("//button[@class='btn btn-tomato-inversed btn-addcart']").click();
+
+         $x("//div[contains(., 'Проверяем возможность доставки и самовывоза')]/../button[@class='close']")
+                 .shouldBe(visible, Duration.ofSeconds(10)).click();
+
+         $x("//button[@class='btn btn-tomato-inversed btn-addcart']").click();
+
+         $x("//div[@id='exampleModalLabel']/../..//button[contains(., 'КОРЗИНУ')]")
+                 .shouldBe(visible, Duration.ofSeconds(10)).click();
+
+         $x("//a[contains(@class,'basket-link')]/span[.='Корзина']");
+
+         $("body").shouldNotHave(text("Ваша корзина пуста"));
+
+    }
+
+
+    @Test
+    void test04AddProduct() {
+
+        $x("//button[@class='btn btn-tomato-inversed btn-addcart']").click();
+
+        $x("//div[contains(., 'Проверяем возможность доставки и самовывоза')]/../button[@class='close']")
+                .shouldBe(visible, Duration.ofSeconds(10)).click();
+
+        $x("//button[@class='btn btn-tomato-inversed btn-addcart']").click();
+
+        $x("//div[@id='exampleModalLabel']/../..//button[contains(., 'КОРЗИНУ')]")
+                .shouldBe(visible, Duration.ofSeconds(10)).click();
+
+        $x("//a[contains(@class,'basket-link')]/span[.='Корзина']");
+
+        $("body").shouldHave(text("Цыпленок сацебели"));
+
+        $x("//a[contains(@class,'btn btn-secondary btn-number')]/data-type[.='plus']").click();
+
+        $("body").shouldHave(text("1500"));
+        
+
+    }
+
+
+}
