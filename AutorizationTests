@@ -26,16 +26,12 @@ public class AutorizationTests {
         // Регистрация(авторизация) пользователя
      @Test
      public void test02UserRegistration() {
-         open("https://www.tomato-pizza.ru/menu/ryazan/pizza");
 
          $x("//a[@class='nav-link auth-link']").click();
 
          $x("//input[@id='registerPhone']").setValue("+79991234567");
 
          $x("//button[@class='btn btn-tomato']").click();
-
-        // $x("//input[@id='registerName']").setValue("Сергей");
-        // $x("//button[@class='btn btn-tomato']").click();
 
          $x("//div[@class='help-text reset-title']").shouldHave(text("Введите код из СМС, отправленный на телефон"));
      }
